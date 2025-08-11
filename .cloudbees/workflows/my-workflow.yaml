@@ -22,3 +22,6 @@ jobs:
           aws ec2 describe-instances
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - '**'
