@@ -57,9 +57,15 @@ jobs:
           echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $ADO_ORG
 
           # Update work item state
-          az boards work-item update --id $WORK_ITEM_ID --state "Done" --project "$PROJECT_NAME"
+          az boards work-item update \
+            --id $WORK_ITEM_ID \
+            --state "Done" \
+            --project \"$PROJECT_NAME\"
 
           # Add deployment comment
-          az boards work-item update --id $WORK_ITEM_ID --discussion "Deployed via CloudBees build $CLOUDBEES_RUN_NUMBER at $CLOUDBEES_RUN_URL" --project "$PROJECT_NAME"
+          az boards work-item update \
+            --id $WORK_ITEM_ID \
+            --discussion "Deployed via CloudBees build $CLOUDBEES_RUN_NUMBER at $CLOUDBEES_RUN_URL" \
+            --project \"$PROJECT_NAME\"
 
           echo "Work item $WORK_ITEM_ID updated successfully"
