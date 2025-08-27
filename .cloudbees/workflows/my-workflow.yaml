@@ -43,3 +43,29 @@ jobs:
           # Verify connection
           az devops project list --output table
 
+  update-work-item:
+    steps:
+      - name: Update Work Item Status
+        uses: docker://mcr.microsoft.com/azure-cli:latest
+        env:
+          AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+          ADO_ORG: ${{ vars.AZURE_DEVOPS_ORG }}
+          PROJECT_NAME: "My Test Project"
+          WORK_ITEM_ID: "12345"  # Could be extracted from commit message
+        run: |
+          az extension add --name azure-devops
+          echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $ADO_ORG
+
+          # Update work item state
+          az boards work-item update \
+            --id $WORK_ITEM_ID \
+            --state "Done" \
+            --project $PROJECT_NAME
+
+          # Add deployment comment
+          az boards work-item update \
+            --id $WORK_ITEM_ID \
+            --discussion "Deployed via CloudBees build $CLOUDBEES_RUN_NUMBER at $CLOUDBEES_RUN_URL" \
+            --project $PROJECT_NAME
+
+          echo "Work item $WORK_ITEM_ID updated successfully"
