@@ -6,6 +6,11 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
 
 jobs:
   execute:
@@ -27,7 +32,7 @@ jobs:
         uses: docker://mcr.microsoft.com/azure-cli:latest
         env:
           AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
-          ADO_ORG: https://dev.azure.com/swashbuck1r
+          ADO_ORG: ${{ vars.AZURE_DEVOPS_ORG }}
         run: |
           # Install Azure DevOps extension
           az extension add --name azure-devops
@@ -37,8 +42,4 @@ jobs:
 
           # Verify connection
           az devops project list --output table
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - '**'
+
