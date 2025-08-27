@@ -27,7 +27,7 @@ jobs:
         uses: docker://mcr.microsoft.com/azure-cli:latest
         env:
           AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
-          ADO_ORG: swashbuck1r
+          ADO_ORG: https://dev.azure.com/swashbuck1r
         run: |
           # Install Azure DevOps extension
           az extension add --name azure-devops
